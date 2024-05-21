@@ -60,32 +60,32 @@ canvas.create_text(730, 300, text="https://bit.ly/NSU3D (or whatever)",
                    anchor = 'n', angle=90)
 
 # Days of Week
-canvas.create_text(100, 495, text="WED 5/18",
+canvas.create_text(105, 495, text="WED 5/18",
                    fill="black", font=('Courier 12'),
                    anchor = 'n', angle=90)
 
-canvas.create_text(100, 385, text="THU 5/19",
+canvas.create_text(105, 385, text="THU 5/19",
                    fill="black", font=('Courier 12'),
                    anchor = 'n', angle=90)
 
-canvas.create_text(100, 275, text="FRI 5/20",
+canvas.create_text(105, 275, text="FRI 5/20",
                    fill="black", font=('Courier 12'),
                    anchor = 'n', angle=90)
 
-canvas.create_text(100, 165, text="SAT 5/21",
+canvas.create_text(105, 165, text="SAT 5/21",
                    fill="black", font=('Courier 12'),
                    anchor = 'n', angle=90)
 
-canvas.create_text(100, 55, text="SUN 5/22",
+canvas.create_text(105, 55, text="SUN 5/22",
                    fill="black", font=('Courier 12'),
                    anchor = 'n', angle=90)
 
 for day in range(5):
-    canvas.create_text(120, 495 - 110 * day + 27.5, text="Vyper",
+    canvas.create_text(125, 495 - 110 * day + 27.5, text="Vyper",
                        fill="black", font=('Courier 10'),
                        anchor = 'n', angle=90)
 
-    canvas.create_text(120, 495 - 110 * day - 27.5, text="Ender",
+    canvas.create_text(125, 495 - 110 * day - 27.5, text="Ender",
                        fill="black", font=('Courier 10'),
                        anchor = 'n', angle=90)
 
@@ -94,21 +94,21 @@ for day in range(5):
 for pos, hour in enumerate(['7 AM', '8 AM', '9 AM', '10 AM', '11 AM', '12 PM', '1 PM',
                             '2 PM', '3 PM', '4 PM', '5 PM', '6 PM',
                             '7 PM']):
-    canvas.create_text(140 + 40 * pos, 575, text = hour,
+    canvas.create_text(145 + 40 * pos, 575, text = hour,
                        fill="black", font=('Courier 10'),
                        anchor = 'n', angle=90)
 
 # Busy times
 canvas.create_rectangle(180, 111, 300, 164, fill = '#3F51B5', width = 2)
-canvas.create_text(180, 137.5, text = 'IN USE', fill = 'white',
+canvas.create_text(185, 137.5, text = 'IN USE', fill = 'white',
                    font=('Courier 9'), anchor = 'n', angle=90)
 
 canvas.create_rectangle(180, 441, 400, 494, fill = '#3F51B5', width = 2)
-canvas.create_text(180, 440 + 27.5, text = 'IN USE', fill = 'white',
+canvas.create_text(185, 440 + 27.5, text = 'IN USE', fill = 'white',
                    font=('Courier 9'), anchor = 'n', angle=90)
 
 canvas.create_rectangle(240, 496, 600, 549, fill = '#D50000', width = 2)
-canvas.create_text(240, 495 + 27.5, text = 'IN USE', fill = 'white',
+canvas.create_text(245, 495 + 27.5, text = 'IN USE', fill = 'white',
                    font=('Courier 9'), anchor = 'n', angle=90)
 
 
