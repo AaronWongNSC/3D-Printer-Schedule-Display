@@ -1,12 +1,13 @@
-import datetime
+from datetime import datetime
 import os.path
 
-from time_format import time_format
+import get_time
 
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
+
 from googleapiclient.errors import HttpError
 
 # If modifying these scopes, delete the file token.json.
@@ -33,53 +34,63 @@ def get_credentials():
     
     return creds
 
-def get_events():
-    def display_event(event):
-        def convert_time(time):
-            dt = datetime.datetime.strptime(time[:19], "%Y-%m-%dT%H:%M:%S")
-            return dt.strftime(time_format)
-        
-        start = convert_time(event["start"]["dateTime"])
-        end = convert_time(event["end"]["dateTime"])
-        print('{:25}{:25}  {}'.format(start, end, event["summary"]))
-    
+def get_events(local_start_dt, local_stop_dt):
     creds = get_credentials()
     service = build("calendar", "v3", credentials=creds)
+    start_time = get_time.g_time(local_start_dt)
+    stop_time = get_time.g_time(local_stop_dt)
     
-    # Call the Calendar API
-    now = datetime.datetime.utcnow().isoformat() + "Z"  # 'Z' indicates UTC time
-    events_result = (
-        service.events()
-        .list(
-            calendarId="48a69f78a92ac5650ee3ce054b572f1002bbd84d450f5750c080a5480618c2a8@group.calendar.google.com",
-            timeMin=now,
-            maxResults=5,
-            singleEvents=True,
-            orderBy="startTime",
+    try:
+        # Call the Calendar API
+        events_result = (
+            service.events()
+            .list(
+                calendarId="48a69f78a92ac5650ee3ce054b572f1002bbd84d450f5750c080a5480618c2a8@group.calendar.google.com",
+                timeMin=start_time,
+                timeMax=stop_time,
+                singleEvents=True,
+                orderBy="startTime",
+            )
+            .execute()
         )
-        .execute()
-    )
-    vyper = events_result.get("items", [])
-    
-    events_result = (
-        service.events()
-        .list(
-            calendarId="cfbcfbd49fa596653a2d368cfdc6331a9a288082bf7d5a403cf05a399ffc4a3a@group.calendar.google.com",
-            timeMin=now,
-            maxResults=5,
-            singleEvents=True,
-            orderBy="startTime",
+        vyper = events_result.get("items", [])
+        
+        events_result = (
+            service.events()
+            .list(
+                calendarId="cfbcfbd49fa596653a2d368cfdc6331a9a288082bf7d5a403cf05a399ffc4a3a@group.calendar.google.com",
+                timeMin=start_time,
+                timeMax=stop_time,
+                singleEvents=True,
+                orderBy="startTime",
+            )
+            .execute()
         )
-        .execute()
-    )
-    ender = events_result.get("items", [])
-    
-    print('Next 5 prints on the Vyper:')
-    print('{:25}{:25}  {}'.format('START', 'STOP', 'DESCRIPTION'))
-    for event in vyper:
-        display_event(event)
-    
-    print('\nNext 5 prints on the Ender:')
-    print('{:25}{:25}  {}'.format('START', 'STOP', 'DESCRIPTION'))
-    for event in ender:
-        display_event(event)
+        ender = events_result.get("items", [])
+        
+        # Add printer information
+        for event in vyper:
+            event['printer'] = 'vyper'
+        for event in ender:
+            event['printer'] = 'ender'    
+        
+        # Create prints list
+        prints = [ convert_event(event) for event in vyper + ender]
+        
+        return prints
+
+    except HttpError as error:
+        print(f"An error occurred: {error}")
+        return None
+
+def convert_event(event):
+    starttime = get_time.convert_local_dt(
+        datetime.strptime(event['start']['dateTime'][:19], get_time.GOOGLE_TIME_FORMAT))
+    endtime = get_time.convert_local_dt(
+        datetime.strptime(event['end']['dateTime'][:19], get_time.GOOGLE_TIME_FORMAT))
+    return {
+        'printer': event['printer'],
+        'title': event['summary'],
+        'start': starttime,
+        'end': endtime,
+        }
