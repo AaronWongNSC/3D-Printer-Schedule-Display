@@ -5,6 +5,8 @@ import calendar_api
 import get_time
 import display
 
+DELAY = 10000
+
 class Schedule():
     def __init__(self):
         self.now = None
@@ -17,7 +19,9 @@ class Schedule():
         self.update_prints()
     
     def update_time(self):
-        self.now = get_time.utc_to_local(get_time.get_utc_time())
+        self.now = get_time.get_utc_time()
+        if self.now is not None:
+            self.now = get_time.utc_to_local(self.now)
 
     def update_prints(self):
         today = get_time.get_date(get_time.utc_to_local(self.now))
@@ -32,7 +36,7 @@ def update_window(schedule):
         display.display_schedule(canvas, schedule)
     else:
         print('Failed Update')
-    root.after(1000, update_window, schedule)    
+    root.after(DELAY, update_window, schedule)    
 
 root = tk.Tk()
 root.geometry('800x600')
