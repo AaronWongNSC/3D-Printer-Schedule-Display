@@ -1,1 +1,0 @@
-time_format = '%m-%d-%Y %I:%M:%S %p'
