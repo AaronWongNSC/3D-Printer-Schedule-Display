@@ -18,6 +18,13 @@ def attract(canvas):
                        fill="white", font=('Courier 18'),
                        anchor = 'n', angle=90)    
 
+def display_loading(canvas):
+    canvas.create_rectangle(0, 0, 800, 600, fill = '#000000')
+    canvas.create_text(400, 300, text="LOADING SCHEDULE...",
+                       fill="white", font=('Courier 24'),
+                       anchor = 'n', angle=90)
+
+
 def display_schedule(canvas, schedule):
     canvas.create_rectangle(0, 0, 800, 600, fill = '#FFFFFF')
     create_static(canvas)

@@ -46,6 +46,7 @@ def update_window(schedule):
     else:
         print('Failed Update')
         schedule.status = 'Fail'
+        display.display_loading(canvas)
     root.after(delay, update_window, schedule)
 
 root = tk.Tk()
@@ -55,9 +56,8 @@ root.geometry('800x600')
 schedule = Schedule()
 
 canvas = tk.Canvas(root, width=800, height=600)
-canvas.create_text(400, 300, text="LOADING SCHEDULE...",
-                   fill="black", font=('Courier 24'),
-                   anchor = 'n', angle=90)
+
+display.display_loading(canvas)
 canvas.pack()
 
 root.after(1000, update_window, schedule)
