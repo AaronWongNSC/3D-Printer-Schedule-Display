@@ -6,6 +6,18 @@ def _create_circle(self, x, y, r, **kwargs):
     return self.create_oval(x-r, y-r, x+r, y+r, **kwargs)
 tk.Canvas.create_circle = _create_circle
 
+def attract(canvas):
+    canvas.create_rectangle(0, 0, 800, 600, fill = '#000000')
+    canvas.create_text(350, 300, text="If you're reading this, you should enroll in",
+                       fill="white", font=('Courier 12'),
+                       anchor = 'n', angle=90)
+    canvas.create_text(400, 300, text="ART 240",
+                       fill="white", font=('Courier 24'),
+                       anchor = 'n', angle=90)
+    canvas.create_text(430, 300, text="3D Modeling for 3D Printing",
+                       fill="white", font=('Courier 18'),
+                       anchor = 'n', angle=90)    
+
 def display_schedule(canvas, schedule):
     canvas.create_rectangle(0, 0, 800, 600, fill = '#FFFFFF')
     create_static(canvas)

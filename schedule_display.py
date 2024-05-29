@@ -11,6 +11,7 @@ class Schedule():
     def __init__(self):
         self.now = None
         self.prints = None
+        self.status = None
     
     def update(self):
         self.update_time()
@@ -31,12 +32,21 @@ class Schedule():
 
 def update_window(schedule):
     schedule.update()
+    delay = DELAY
     if (schedule.now is not None) and (schedule.prints is not None):
-        print('Update: {}'.format(schedule.now))
-        display.display_schedule(canvas, schedule)
+        if schedule.status == 'Display':
+            schedule.status = 'ART240'
+            print('Show ART 240 page: {}'.format(schedule.now))
+            display.attract(canvas)
+            delay = int(DELAY / 10)
+        else:
+            schedule.status = 'Display'
+            print('Update: {}'.format(schedule.now))
+            display.display_schedule(canvas, schedule)
     else:
         print('Failed Update')
-    root.after(DELAY, update_window, schedule)    
+        schedule.status = 'Fail'
+    root.after(delay, update_window, schedule)
 
 root = tk.Tk()
 root.geometry('800x600')
