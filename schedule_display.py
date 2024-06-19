@@ -51,7 +51,7 @@ def update_window(schedule):
 
 root = tk.Tk()
 root.geometry('800x600')
-#root.attributes('-fullscreen',True)
+root.attributes('-fullscreen',True)
 
 schedule = Schedule()
 
