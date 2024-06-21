@@ -5,7 +5,7 @@ import calendar_api
 import get_time
 import display
 
-DELAY = 10000
+DELAY = 5 * 60000
 
 class Schedule():
     def __init__(self):
@@ -33,12 +33,13 @@ class Schedule():
 def update_window(schedule):
     schedule.update()
     delay = DELAY
+    attract_delay = 5000
     if (schedule.now is not None) and (schedule.prints is not None):
         if schedule.status == 'Display':
             schedule.status = 'ART240'
             print('Show ART 240 page: {}'.format(schedule.now))
             display.attract(canvas)
-            delay = int(DELAY / 10)
+            delay = attract_delay
         else:
             schedule.status = 'Display'
             print('Update: {}'.format(schedule.now))
@@ -49,17 +50,25 @@ def update_window(schedule):
         display.display_loading(canvas)
     root.after(delay, update_window, schedule)
 
-root = tk.Tk()
-root.geometry('800x600')
-root.attributes('-fullscreen',True)
+def main():
+    try:
+        root = tk.Tk()
+        root.geometry('800x600')
+        root.attributes('-fullscreen',True)
+        
+        schedule = Schedule()
+        
+        canvas = tk.Canvas(root, width=800, height=600)
+        
+        display.display_loading(canvas)
+        canvas.pack()
+        
+        root.after(1000, update_window, schedule)
+        
+        root.mainloop()
+    
+    except:
+        return
 
-schedule = Schedule()
-
-canvas = tk.Canvas(root, width=800, height=600)
-
-display.display_loading(canvas)
-canvas.pack()
-
-root.after(1000, update_window, schedule)
-
-root.mainloop()
+if __name__ == "__main__":
+    main()
