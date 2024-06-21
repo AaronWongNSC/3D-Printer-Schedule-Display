@@ -1,6 +1,7 @@
 import tkinter as tk
 import datetime
 
+import sys
 import calendar_api
 import get_time
 import display
@@ -50,25 +51,21 @@ def update_window(schedule):
         display.display_loading(canvas)
     root.after(delay, update_window, schedule)
 
-def main():
-    try:
-        root = tk.Tk()
-        root.geometry('800x600')
-        root.attributes('-fullscreen',True)
-        
-        schedule = Schedule()
-        
-        canvas = tk.Canvas(root, width=800, height=600)
-        
-        display.display_loading(canvas)
-        canvas.pack()
-        
-        root.after(1000, update_window, schedule)
-        
-        root.mainloop()
+try:
+    root = tk.Tk()
+    root.geometry('800x600')
+    root.attributes('-fullscreen',True)
     
-    except:
-        return
+    schedule = Schedule()
+    
+    canvas = tk.Canvas(root, width=800, height=600)
+    
+    display.display_loading(canvas)
+    canvas.pack()
+    
+    root.after(1000, update_window, schedule)
+    
+    root.mainloop()
 
-if __name__ == "__main__":
-    main()
+except:
+    sys.exit(0)
