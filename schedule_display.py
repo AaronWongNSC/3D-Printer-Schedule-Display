@@ -68,4 +68,5 @@ try:
     root.mainloop()
 
 except:
-    sys.exit(0)
+    root.destroy()
+    sys.exit(1)
